@@ -16,7 +16,7 @@
 
 int main() {
     auto socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    sockaddr_in addr{ .sin_family = AF_INET, .sin_port = 4500, .sin_addr = { .s_addr = inet_addr("127.0.0.1") } };
+    sockaddr_in addr{ .sin_family = AF_INET, .sin_port = PORT_VALUE, .sin_addr = { .s_addr = inet_addr("127.0.0.1") }, .sin_zero = { } };
 
     int result = connect(socket_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) ? errno : 0;
 
@@ -52,6 +52,7 @@ int main() {
             printf("Got message %s\n", message.buffer);
 
             if (strcmp(message.buffer, ":q") == 0) {
+                send_message(socket_fd, ":q", 2);
                 printf("Exiting...\n");
                 break;
             }
@@ -67,7 +68,9 @@ int main() {
 
             if (s.empty()) continue;
 
-            long send_result = send_message(socket_fd, s.c_str(), s.length());
+            std::string outgoing = "user 2: " + s;
+
+            long send_result = send_message(socket_fd, outgoing.c_str(), outgoing.length());
 
             printf("send result: %ld\n", send_result);
 

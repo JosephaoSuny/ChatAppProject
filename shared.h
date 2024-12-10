@@ -1,6 +1,8 @@
 #ifndef SHARED_H
 #define SHARED_H
 
+#define PORT_VALUE 8080
+
 #include <cstddef>
 
 /// In memory message from connected client

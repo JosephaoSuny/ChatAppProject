@@ -49,7 +49,7 @@ long read_message(const int connection_fd, Message* message) {
     message->capacity = max(message->length, message->capacity);
 
     // Store the total read bytes
-    long read = 0;
+    unsigned long read = 0;
 
     // While the read bytes doesn't equal the length, continue reading
     while (read != message->length) {
@@ -69,7 +69,7 @@ long read_message(const int connection_fd, Message* message) {
         read += result;
     }
 
-    return read;
+    return static_cast<long>(read);
 }
 
 long send_message(const int connection_fd, const char* message, const size_t length) {
